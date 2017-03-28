@@ -120,8 +120,8 @@ REPLACE INTO `tbl_adm_params` (`id`, `parameter`, `wert`, `type`, `tab`, `acc`, 
 	(84, 'SMTPPORT', '587', 'text', 2, 6, 9, 'SMTP-Port Ihres Mail-Servers', 'Geben Sie hier den Port Ihres Mail-Servers ein, z.B. \'587\' für TLS'),
 	(85, 'SMTPSECURE', 'tls', 'text', 2, 6, 10, 'E-Mail-Sicherheit', 'Geben Sie hier die Sicherheitsstufe für den SMTP-Server ein: Möglich Eingaben sind \'\' (leer für keine), \'ssl\' und \'tls\''),
 	(86, 'MAPUMFELD', 'Ergolding|Landshut|Piflas', 'text', 2, 3, 2, 'Ortskonfiguration', 'Konfigurieren Sie hier das Stadtgebiet bzw. die Orte rund um Ihr Feuerwehrhaus. Das Display passt für diese Orte die Zoomstufen der Kartendarstellung besonders an. Mehrere Orte trennen Sie durch das Pipe-Zeichen (\'|\'),'),
-	(87, 'MAPFFWHAUS', 'Gartenstrasse 1, 84030 Ergolding', 'text', 2, 3, 1, 'Anschrift Feuerwehrhaus', 'Diese Anschrift wird für die Routenberechnung verwendet. Tipp: Straßennamen mit Doppel-S schreiben. Angabe: Strasse Hausnr, PLZ Ort ');
-  (47, 'MAILFAX', 'false', 'boolean', 2, 6, 3, 'Alarmfax in Mail einfügen', 'Soll der E-Mail das Alarmfax als Bildanhang beigefügt werden?'),
+	(87, 'MAPFFWHAUS', 'Gartenstrasse 1, 84030 Ergolding', 'text', 2, 3, 1, 'Anschrift Feuerwehrhaus', 'Diese Anschrift wird für die Routenberechnung verwendet. Tipp: Straßennamen mit Doppel-S schreiben. Angabe: Strasse Hausnr, PLZ Ort '),
+  (47, 'MAILFAX', 'false', 'boolean', 2, 6, 3, 'Alarmfax in Mail einfügen', 'Soll der E-Mail das Alarmfax als Bildanhang beigefügt werden?');
 	/*!40000 ALTER TABLE `tbl_adm_params` ENABLE KEYS */;
 
 
