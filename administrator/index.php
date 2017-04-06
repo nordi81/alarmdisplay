@@ -258,7 +258,7 @@ $tabs->close();
 
 ?>
 
-<div class="savebutton">	 
+<div class="center">	 
 	<input type="submit" name="submit" value="Speichern"/>&nbsp;<input type="reset" value=" Abbrechen">
 </div>
 
@@ -273,7 +273,7 @@ $result = $db->query("SELECT wert FROM tbl_adm_params WHERE parameter='EIGENESLO
 $row = $result->fetch_row();
 
 if ($row[0]=="true") {
-echo "<div align='center'><hr>	
+echo "<div class='center'><hr>	
 <h3>Individuelles Logo für das Alarmdisplay</h3><br>
 Hier können Sie eine Grafik hochladen, die dann auf dem Alarmdisplay angezeigt wird. Aktuell ist die Grafik, die auf dieser Seite rechts oben angezeigt wird. <br><br>
 <form enctype='multipart/form-data' action='logo-upload.php' method='POST'>
