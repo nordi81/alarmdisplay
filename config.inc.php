@@ -29,6 +29,6 @@ Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
 
 define("DBHOST", "127.0.0.1");		// Der Server
 define("DBNAME", "alarmdisplay");	// Datenbankname
-define("DBUSER", "benutzer");		// Datenbank-Benutzer - "root" für den Admin
-define("DBPASS", "meinpasswort");	// Datenbank-Passwort
+define("DBUSER", "root");		// Datenbank-Benutzer - "root" für den Admin
+define("DBPASS", "");	// Datenbank-Passwort
 
