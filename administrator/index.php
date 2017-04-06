@@ -141,28 +141,23 @@ jQuery(function(jQuery)
 <?php 
 
 // Wird das Formular zum Speichern aufgerufen?
-if (isset($_POST['submit']))
-{
+if (isset($_POST['submit'])){
 	// Ja, wir bekommen Daten. Die müssen wir an die Datenbank melden.
-
-	foreach ($_POST as $k=>$v)
-	{
-	if ($k != "submit") 
-	{
-	$result=$db->query("UPDATE tbl_adm_params SET wert = '".$v."' WHERE parameter = '".$k."'");
-	}  
+	foreach ($_POST as $k=>$v){
+		if ($k != "submit") {
+			$result=$db->query("UPDATE tbl_adm_params SET wert = '".$v."' WHERE parameter = '".$k."'");
+		}  
 	}
-
-
+	
 	echo "<body onload='javascript:alert(\"Daten gespeichert!\")'>";
 	
-} else {
+}else{
 	// nur Body ausgeben
 	echo "<body>";
 
 }
 
-// Erste Datenbank-Abfrage - Wie heisst unser Laden eigentlich?
+// Erste Datenbank-Abfrage - Abfrage des Feuerwehrnamens
 
 $nameff = $db->query("SELECT wert FROM tbl_adm_params WHERE parameter = 'NAMEFEUERWEHR'");
 $nameff = $nameff->fetch_row();
@@ -173,9 +168,8 @@ $nameff = $nameff[0];
 
 echo "<div><img src='../images/logo.png' align='right'><br /><a href='logout.php'>Logout</a><br><h2>Administration Alarmdisplay ".$nameff."</h2></div>";
 
-echo "";
-
 echo "<form action='http://".$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']."' method='POST'>";
+
 echo "<div id='tabs'>\n\n<ul>";
 
 
@@ -183,11 +177,9 @@ echo "<div id='tabs'>\n\n<ul>";
 $tabs = $db->query("SELECT tab, title FROM tbl_adm_params WHERE (acc=0 AND line=0) GROUP BY tab");
 
 // Schreiben der Tabinfos
-while ($row = $tabs->fetch_row())
-{
+while ($row = $tabs->fetch_row()){
 	echo "<li><a href='#tabs-".$row[0]."'>".$row[1]."</a></li>\n";
 }
-
 
 echo "</ul>\n\n";
 
@@ -195,68 +187,48 @@ echo "</ul>\n\n";
 $tabs = $db->query("SELECT tab, title, beschreibung FROM tbl_adm_params WHERE (acc=0 AND line=0) GROUP BY tab");
 
 // Wir basteln die Inhalte der Tabs.
-while ($row = $tabs->fetch_row())
-{
+while ($row = $tabs->fetch_row()){
 	echo "<div id='tabs-".$row[0]."'>\n";
 	echo $row[2]."<br /><br />\n";
 	
 	// Inhalts-Daten des Tabs abfragen.
 	$accordion = $db->query("SELECT acc, title, beschreibung FROM tbl_adm_params WHERE tab=".$row[0]." AND line=0 AND acc>0 ORDER BY title");
 	
-	while ($row2 = $accordion->fetch_row())
-	{
-		echo "<fieldset style='background-color: #FFCC99;'>";
+	while ($row2 = $accordion->fetch_row()){
+		echo "<fieldset class='red-field'>";
 		echo "<legend>".$row2[1]."</legend>\n".$row2[2]."<br><br><div>\n";
-
 	
 		// Zugehörige Lines abfragen
 		$lines = $db->query("SELECT parameter, wert, type, title, beschreibung FROM tbl_adm_params WHERE (tab=".$row[0]." AND acc=".$row2[0]." AND line>0) ORDER BY line");
 		
-		while ($row3 = $lines->fetch_row())
-		{
-
+		while ($row3 = $lines->fetch_row()){
 		// Ausgabe der einzelnen Datenfelder. Jetzt müssen wir den Datentyp unterscheiden.
 
+			switch ($row3[2]){
+				case "text":
+				echo "<b>".$row3[4]."</b><br>".$row3[3].": <input type='text' name='".$row3[0]."' value='".$row3[1]."' maxlength='200' /><br><br>";
+				break;
 
-		switch ($row3[2])
-		{
-			case "text":
-			echo "<b>".$row3[4]."</b><br>".$row3[3].": <input type='text' name='".$row3[0]."' value='".$row3[1]."' maxlength='200' /><br><br>";
-			break;
+				case "password":
+				echo "<b>".$row3[4]."</b><br>".$row3[3].": <input type='password' name='".$row3[0]."' value='".$row3[1]."' /><br><br>";
+				break;
 
-			case "password":
-			echo "<b>".$row3[4]."</b><br>".$row3[3].": <input type='password' name='".$row3[0]."' value='".$row3[1]."' /><br><br>";
-			break;
+				case "date":
+				echo "<b>".$row3[4]."</b><br>".$row3[3].": <input type='text' name='".$row3[0]."' value='".$row3[1]."' maxlength='16'/><br><br>";
+				break;
 
-			case "date":
-			echo "<b>".$row3[4]."</b><br>".$row3[3].": <input type='text' name='".$row3[0]."' value='".$row3[1]."' maxlength='16'/><br><br>";
-			break;
-
-			case "boolean":
-			echo "<b>".$row3[4]."</b><br>".$row3[3].": ";
-
-			if ($row3[1]=="true")
-			{ echo "<input type='radio' name='".$row3[0]."' value='true' checked> ja  "; 
-			} else {
-			echo "<input type='radio' name='".$row3[0]."' value='true'> ja   "; }
-
-			if ($row3[1]=="false")
-			{ echo "<input type='radio' name='".$row3[0]."' value='false' checked> nein<br><br><br>"; 
-			} else {
-			echo "<input type='radio' name='".$row3[0]."' value='false'> nein<br><br><br>"; }
-
-
-
-			//echo $row3[4]."<br>".$row3[3].": <input type='text' name='".$row3[0]."' value='".$row3[1]."' maxlength='5'/><br><br>";
-
-			
-			break;
-
-
-
-		}
-		
-	
+				case "boolean":
+				echo "<b>".$row3[4]."</b><br>".$row3[3].": ";
+				if ($row3[1]=="true"){
+					echo "<input type='radio' name='".$row3[0]."' value='true' checked> ja  "; 
+				}else{
+					echo "<input type='radio' name='".$row3[0]."' value='true'> ja   "; }
+				if ($row3[1]=="false"){
+					echo "<input type='radio' name='".$row3[0]."' value='false' checked> nein<br><br><br>"; 
+				}else{
+				echo "<input type='radio' name='".$row3[0]."' value='false'> nein<br><br><br>"; }
+				break;
+			}
 		}
 
 		$lines->close();
@@ -267,18 +239,12 @@ while ($row = $tabs->fetch_row())
 
 	// Userverwaltung auf den ersten Tab bringen.
 
-	if ($row[0]==1)
-	{echo "<fieldset>
-	<legend>User für E-Mail-Benachrichtigung einstellen</legend>
-	Falls die E-Mail-Funktion aktiviert ist, wird bei Eingang eines Alarmfaxes an jede eingetragene Adresse eine E-Mail geschickt.<br/>
-	<iframe width='90%' height='250' src='useredit.php'></iframe>
-	</fieldset>";
-	
-	
-
-
-
-
+	if ($row[0]==1){
+		echo "<fieldset  class='red-field'>
+		<legend>User für E-Mail-Benachrichtigung einstellen</legend>
+		Falls die E-Mail-Funktion aktiviert ist, wird bei Eingang eines Alarmfaxes an jede eingetragene Adresse eine E-Mail geschickt.<br/>
+		<iframe width='90%' height='250' src='useredit.php'></iframe>
+		</fieldset>";
 	}
 
 	echo "</div>\n";
@@ -292,7 +258,7 @@ $tabs->close();
 
 ?>
 
-<div align="center">	 
+<div class="savebutton">	 
 	<input type="submit" name="submit" value="Speichern"/>&nbsp;<input type="reset" value=" Abbrechen">
 </div>
 
@@ -330,7 +296,8 @@ $db->close();
 
 
 <br><br>
-Programmiert 2012 von <a href="mailto:Stefan Windele">Stefan Windele</a> für <a href="http://www.feuerwehr-piflas.de" target="_new">Freiwillige Feuerwehr Piflas</a>.<br><br>
+Programmiert 2016 von Fabian Drechsler</a> für Freiwillige Feuerwehr Oberbechingen.<br>
+Aufbauend auf Quellcode von Stefan Windele Feuerwehr Piflas<br>
 
 
 

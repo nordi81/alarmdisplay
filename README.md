@@ -144,6 +144,7 @@ Merken Sie sich das bei der Installation gesetzte Datenbank-Master-Passwort!
 Installieren Sie auch folgende Softwarepakete:
 
 `sudo apt-get install openssl build-essential libssl-dev libxrender-dev libqt4-dev`
+
 `sudo apt-get install qt4-dev-tools motion imagemagick cuneiform xdotool php5 curl`
 
 
